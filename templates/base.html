@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Info-Store</title>
+    <title>Ipl</title>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -23,7 +23,7 @@
 </nav>
 <div class="container">
    <h1 style="text-align: center">What do you want to search for on Info-store(name sucks but still working on it 😁)?</h1>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col s4">
             <div class="center">
                 <i class="large material-icons" style="color: #EE6E73">flash_on</i>
@@ -47,11 +47,17 @@
                 <p class="light center">We built this with ❤️💕</p>
             </div>
         </div>
-    </div>
+    </div> -->
+    {{years}}
     <h1>New Search</h1>
-    <form action="{% url 'new_search' %}" method="post">
+    <form action="{% url 'yeardata' %}" method="post">
         {% csrf_token %}
-        <input typr="text" name="search" placeholder="search">
+        <!-- <input typr="text" name="search" placeholder="search"> -->
+        <select style="display: block;" name="year" id="year">
+            {% for year in years %}
+                <option value="{{ year.year }}">{{year.year}}</option> 
+            {% endfor %}
+             </select>
         <button class="btn waves-effect waves-light" type="submit" name="action">Submit
             <i class="material-icons right">send</i>
         </button>
