@@ -17,7 +17,7 @@ from django.utils.translation import gettext as _
 
 # Create your models here. id,city,date,player_of_match,venue,neutral_venue,team1,team2,toss_winner,toss_decision,winner,result,result_margin,eliminator,method,umpire1,umpire2
 class IPL(models.Model):
-    #id = models.AutoField(_('id'), auto_created=True, primary_key=True, serialize=False, unique=False)
+    id = models.AutoField(_('id'), auto_created=False, primary_key=True, serialize=False, unique=True)
     #id,season,city,date,team1,team2,toss_winner,toss_decision,result,dl_applied,winner,win_by_runs,win_by_wickets,player_of_match,venue,umpire1,umpire2,umpire3
     season =  models.IntegerField(_('season'), default=0)
     city = models.CharField(_('city'), default='NA', max_length=255)

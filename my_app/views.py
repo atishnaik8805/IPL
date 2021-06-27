@@ -1,21 +1,19 @@
 from collections import Counter
+from os import environ
+import os
 from django.db.models.aggregates import Count, Max, Min
+from django.db.models.expressions import F
+import pymongo
 import requests
 from django.shortcuts import render
 from bs4 import BeautifulSoup
 from requests.compat import quote_plus
 from . import models
 
-BASE_CRAIGSLIST_URL = 'https://bangalore.craigslist.org/search/?query={}'
-BASE_IMAGE_URL = 'https://images.craigslist.org/{}_300x300.jpg'
-
 
 # Create your views here.
 def home(request):
     dates = models.IPL.objects.values().dates('date', 'year')
-    print(list(dates))
-    for i in list(dates):
-        print(i.year)
     setYears ={
       'years': list(dates)
     }
@@ -23,8 +21,13 @@ def home(request):
 
 
 def yeardata(request):
+    class returnList:
+        @property
+        def returnItems(self):
+            return enumerate(self.items())
     year = request.POST.get('year')
-    print('Yo', year)
+    dates = models.IPL.objects.values().dates('date', 'year')
+    #print('Yo', year)
     #q1
     top4=dict()
     qs = models.IPL.objects.values('team1', 'team2', 'winner').filter(date__year=year).order_by('-id')[:20]
@@ -57,7 +60,7 @@ def yeardata(request):
         four = top4qs[2]['team2']
         top4['4'] = four
     
-    print(top4)
+    #print(top4)
     
 
     print(top4qs)
@@ -71,7 +74,7 @@ def yeardata(request):
     for obj in tossWins:
         if obj['countoftosswins'] == maxValue:
             maxTossWinsTeam = obj
-    #print(maxTossWinsTeam)
+    #print('maxToss', maxTossWinsTeam)
     
     
     #q3
@@ -82,7 +85,7 @@ def yeardata(request):
         if obj['countofpomwins'] == maxValue:
             maxPomWinsTeam = obj
     
-    #print(maxPomWinsTeam)
+    #print('maxPOM', maxPomWinsTeam)
 
     #q4
     teamWins = models.IPL.objects.values('winner').annotate(countofteamwins= Count('winner')).filter(date__year=year)
@@ -92,7 +95,7 @@ def yeardata(request):
         if obj['countofteamwins'] == maxValue:
             maxteamWinsTeam = obj
     
-    #print(maxteamWinsTeam)
+    #print('maxTemsWins' , maxteamWinsTeam)
 
     #q5
     venueWins = models.IPL.objects.values('venue').annotate(countofvenuewins= Count('venue')).filter(date__year=year, winner=one)
@@ -102,6 +105,7 @@ def yeardata(request):
         if obj['countofvenuewins'] == maxValue:
             maxVenueWins = obj
     
+    #print('max Venue', maxVenueWins)
     #q6
     totalCount = models.IPL.objects.filter(date__year=year).count()
     percBatQs = models.IPL.objects.filter(date__year=year, toss_decision = 'bat').aggregate(bats = Count('id'))
@@ -109,7 +113,7 @@ def yeardata(request):
     # print(percBatQs['bats'])
     # print(totalCount)
 
-    #print(maxVenueWins)
+    #print('%', percBatQs)
 
     #q7
     venue = models.IPL.objects.values('venue').annotate(countofvenue= Count('venue')).filter(date__year=year)
@@ -119,65 +123,138 @@ def yeardata(request):
         if obj['countofvenue'] == maxValue:
             maxVenue = obj
     
+    #print('max Venue', maxVenue)
 
     #q8
-    # runMargins = models.IPL.objects.values('result_margin', 'team1', 'team2', 'winner', 'venue').filter(date__year=year, result='runs')
-    # print(runMargins)
-    # print(runMargins.aggregate(Min('result_margin')))
-    # maxValue = runMargins.aggregate(Min('result_margin'))['result_margin__max']
-    # maxRunMargin = {}
-    # for obj in venueWins:
-    #     if obj['result_margin'] == maxValue:
-    #         maxRunMargin = obj
+    runMargins = models.IPL.objects.values('win_by_runs', 'team1', 'team2', 'winner', 'venue').filter(date__year=year, win_by_runs__gt = 0)
+    #print(runMargins)
+    #print(runMargins.aggregate(Max('win_by_runs')))
+    maxValue = runMargins.aggregate(Max('win_by_runs'))['win_by_runs__max']
+    maxRunMargin = {}
+    for obj in runMargins:
+        if obj['win_by_runs'] == maxValue:
+            maxRunMargin = obj
     
-    # print(maxRunMargin)
+    #print('maXMArhin', maxRunMargin)
+    
+    #q2.1
+    wicketsMargins = models.IPL.objects.values('win_by_wickets', 'team1', 'team2', 'winner', 'venue').filter(date__year=year, win_by_wickets__gt = 0)
+    #print(wicketsMargins)
+    #print(wicketsMargins.aggregate(Max('win_by_wickets')))
+    maxValue = wicketsMargins.aggregate(Max('win_by_wickets'))['win_by_wickets__max']
+    maxWicketsMargin = {}
+    for obj in wicketsMargins:
+        if obj['win_by_wickets'] == maxValue:
+            maxWicketsMargin = obj
+    
+    #print(maxWicketsMargin)
+    #q2.2
+    totalCountTossAndWins = models.IPL.objects.filter(date__year=year, toss_winner = F('winner') ).count()
+    #print(totalCountTossAndWins)
+
+    allids=models.IPL.objects.values_list('id', flat=True).filter(date__year=year)
+    allids = list(allids)
+    print((allids))
+    print(os.environ.get('MONGO_USER'))
+    print(os.environ.get('MONGO_PASS'))
+    uri = 'mongodb+srv://'+os.environ.get('MONGO_USER')+':'+os.environ.get('MONGO_PASS')+'@cluster2.d8upo.mongodb.net/ipl?retryWrites=true&w=majority'
+    #client = pymongo.MongoClient("mongodb+srv://ipluser:atishnaik8805@cluster2.d8upo.mongodb.net/ipl?retryWrites=true&w=majority")
+    client = pymongo.MongoClient(uri)
+    db = client['ipl']
+    cursor4Year = db.get_collection('dummy2').aggregate(
+        [
+            {
+                '$match': {
+                    'match_id': {
+                        '$in': allids
+                    }
+                }
+            },
+            {'$group':{
+                '_id': { 'match_id':'$match_id', 'fielder': '$fielder'},
+                'count': {'$sum':1}
+            }}
+        ]
+    )
+
+    cursor4Yearbowl = db.get_collection('dummy2').aggregate(
+        [
+            {
+                '$match': {
+                    'match_id': {
+                        '$in': allids
+                    }
+                }
+            },
+            {'$group':{
+                '_id': { 'match_id':'$match_id', 'bowler': '$bowler'},
+                'totalruns': {'$sum': {'$add' : '$total_runs'} }
+            }}
+        ]
+    )
+
+    cursor4Yearbats = db.get_collection('dummy2').aggregate(
+        [
+            {
+                '$match': {
+                    'match_id': {
+                        '$in': allids
+                    }
+                }
+            },
+            {'$group':{
+                '_id': { 'match_id':'$match_id', 'batsman': '$batsman'},
+                'totalruns': {'$sum': {'$add' : '$batsman_runs'} }
+            }}
+        ]
+    )
+    maxRunsScored = 0
+    maxRunsBats = {}
+    for player in cursor4Yearbats:
+        if (player['_id']['batsman'] != '' and player['totalruns']>maxRunsScored):
+            maxRunsScored = player['totalruns']
+            maxRunsBats = player
+    
+    maxRunsBats['id'] = maxRunsBats['_id']
+    
+
+    maxRuns=0
+    maxRunsBowl = {}
+    for player in cursor4Yearbowl:
+        if (player['_id']['bowler'] != '' and player['totalruns']>maxRuns):
+            maxRuns = player['totalruns']
+            maxRunsBowl = player    
+    maxRunsBowl['id'] = maxRunsBowl['_id']
+
+    #cursor4PlayerID = db.get_collection('dummy2').find({'fielder': {'$ne': ''}})
+    #print(cursor4Year.next())
+    maxCatches = {}
+    maxCatchesVal = 0
+    for player in cursor4Year:
+        if (player['_id']['fielder'] != '' and player['count']>maxCatchesVal):
+            maxCatchesVal = player['count']
+            maxCatches = player
+    
+    maxCatches['id'] = maxCatches['_id']
+    
+    print(maxRunsBowl)
+    #q2.3
     
     sendData = {
+        'years': dates,
         'mostTossWins': maxTossWinsTeam,
-        'top4teams': top4,
+        'top4teams': top4.values(),
         'mostPomWins': maxPomWinsTeam,
         'mostTeamWins': maxteamWinsTeam,
-        'mostVenueWins': venueWins,
+        'mostVenueWins': maxVenueWins,
         'percOfBats': percBatQs['bats'] * 100 / totalCount,
-        'mostVenue': maxVenue
-
+        'mostVenue': maxVenue,
+        'maxRunMargin': maxRunMargin,
+        'maxWicketMargin': maxWicketsMargin,
+        'totalCountTossAndWins': totalCountTossAndWins,
+        'maxRunsHitMatch': maxRunsBats,
+        'maxRunsGiven': maxRunsBowl,
+        'maxFielderCatches': maxCatches
     }
-    return render(request, 'my_app/new_search.html')
-# def new_search(request):
-#     search = request.POST.get('search')
-#     if search is None:
-#         search = ""
-#         return render(request, 'my_app/new_search.html')
-#     else:
-#         if models.Search.objects.filter(search=search).exists() is False:
-#             models.Search.objects.create(search=search)
-#         final_url = BASE_CRAIGSLIST_URL.format(quote_plus(search))
-#         response = requests.get(final_url)
-#         data = response.text
-#         soup = BeautifulSoup(data, features='html.parser')
-#         post_listings = soup.find_all('li', {'class': 'result-row'})
-#         final_postings = []
-
-#         for post in post_listings:
-#             post_title = post.find(class_='result-title').text
-#             post_url = post.find('a').get('href')
-
-#             if post.find(class_='result-price'):
-#                 post_price = post.find(class_='result-price').text
-#             else:
-#                 post_price = 'N/A'
-
-#             if post.find(class_='result-image').get('data-ids'):
-#                 post_image_id = post.find(class_='result-image').get('data-ids').split(',')[0].split(':')[1]
-#                 post_image_url = BASE_IMAGE_URL.format(post_image_id)
-#                 # print(post_image_url)
-#             else:
-#                 post_image_url = 'https://craigslist.org/images/peace.jpg'
-
-#             final_postings.append((post_title, post_url, post_price, post_image_url))
-
-#         for_front_end = {
-#             'search': search,
-#             'final_postings': final_postings,
-#         }
-#         return render(request, 'my_app/new_search.html', for_front_end)
+    print(sendData)
+    return render(request, 'my_app/new_search.html', sendData)

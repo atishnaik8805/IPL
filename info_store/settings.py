@@ -13,6 +13,17 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 import django_heroku
 
+
+import environ
+
+
+#Initialize env variables
+env = environ.Env()
+environ.Env.read_env()
+
+os.environ.setdefault('MONGO_USER', env('MONGO_USER'))
+os.environ.setdefault('MONGO_PASS', env('MONGO_PASS'))
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')

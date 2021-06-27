@@ -1,5 +1,165 @@
 {% extends 'base.html' %}
 
 {% block content %}
-   <h1>Hello World</h1>
+   <div class="stats-container">
+       <div class="data-flex">
+        {% if top4teams%}
+        <div class="row" style="width:50%;">
+            <div class="col s12 m6">
+              <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                  <span class="card-title">Top four Teams</span>
+                  <ul>
+                    {% for value in top4teams %}
+                    <li>{{value}}</li>
+                    {% endfor %}
+                </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+           {% endif %}
+           
+           {% if mostTossWins %}
+           <div class="row" style="width:50%;">
+            <div class="col s12 m6">
+              <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                  <span class="card-title">Most No of Tosses Wins</span>
+                  <label>{{mostTossWins.toss_winner}}:{{mostTossWins.countoftosswins}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+           {% endif %}
+           
+           {% if mostPomWins %}
+           <div class="row" style="width:50%;">
+            <div class="col s12 m6">
+              <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                  <span class="card-title">Maximum Player of the Match</span>
+                  <label>Name:{{mostPomWins.player_of_match}}</label>
+                  <label>Total POM:{{mostPomWins.countofpomwins}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+           {% endif %}
+           
+           {% if mostTeamWins %}
+           <div class="row" style="width:50%;">
+            <div class="col s12 m6">
+              <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                  <span class="card-title">Team with most wins</span>
+                  <label>Team:{{mostTeamWins.winner}}</label>
+                  <label>Total wins:{{mostTeamWins.countofteamwins}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+           {% endif %}
+           
+
+           {% if mostVenueWins %}
+           <div class="row" style="width:50%;">
+            <div class="col s12 m6">
+              <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                  <span class="card-title">location most wins for the top team</span>
+                  <label>Team:{{mostVenueWins.venue}}</label>
+                  <label>Total wins:{{mostVenueWins.countofvenuewins}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+           {% endif %}
+           
+           {% if percOfBats %}
+           <div class="row" style="width:50%;">
+            <div class="col s12 m6">
+              <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                  <span class="card-title">% of Bats</span>
+                  <label>Bat Perc:{{percOfBats}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+           {% endif %}
+           
+           {% if mostVenue %}
+           <div class="row" style="width:50%;">
+            <div class="col s12 m6">
+              <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                  <span class="card-title">location hosted most matches</span>
+                  <label>Team:{{mostVenue.venue}}</label>
+                  <label>Total hosted:{{mostVenue.countofvenue}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+           {% endif %}
+           
+           {% if maxRunMargin %}
+           <div class="row" style="width:50%;">
+            <div class="col s12 m6">
+              <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                  <span class="card-title">Higest Margin of wins for the particular season</span>
+                  <label>Margin:{{maxRunMargin.win_by_runs}}</label>
+                  <label>Winning team:{{maxRunMargin.winner}}</label>
+                  <label>Venue:{{maxRunMargin.venue}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+           {% endif %}
+
+           {% if maxRunsHitMatch %}
+           <div class="row" style="width:50%;">
+            <div class="col s12 m6">
+              <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                  <span class="card-title">Higest Runs Hit by a Player</span>
+                  <label>Name:{{maxRunsHitMatch.id.batsman}}</label>
+                  <label>Runs:{{maxRunsHitMatch.totalruns}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+           {% endif %}
+
+           {% if maxRunsGiven %}
+           <div class="row" style="width:50%;">
+            <div class="col s12 m6">
+              <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                  <span class="card-title">Most Runs in a Match by a Bowler</span>
+                  <label>Name:{{maxRunsGiven.id.bowler}}</label>
+                  <label>Runs Given:{{maxRunsGiven.totalruns}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+           {% endif %}
+
+           {% if maxFielderCatches %}
+           <div class="row" style="width:50%;">
+            <div class="col s12 m6">
+              <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                  <span class="card-title">Most Catches in one match by a single fielder</span>
+                  <label>Name:{{maxFielderCatches.id.fielder}}</label>
+                  <label>Count:{{maxFielderCatches.count}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+           {% endif %}
+
+       </div>
+   </div>
 {% endblock content %}
