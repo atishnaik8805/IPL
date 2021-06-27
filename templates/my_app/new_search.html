@@ -9,9 +9,14 @@
               <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
                   <span class="card-title">Top four Teams</span>
-                  <ul>
+                    <ul class="collection">
                     {% for value in top4teams %}
-                    <li>{{value}}</li>
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">{{value}}</span>
+                        <!-- <span class="new badge">4</span> -->
+                      </div>
+                    </li>
                     {% endfor %}
                 </ul>
                 </div>
@@ -26,10 +31,14 @@
               <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
                   <span class="card-title">Most No of Tosses Wins</span>
-                  <label>{{mostTossWins.toss_winner}}:{{mostTossWins.countoftosswins}}</label>
+                  <div class="collapsible-header" style="display:grid;">
+                    <span class="title" style="color:gray;">{{mostTossWins.toss_winner}}</span>
+                    <p style="color:gray">{{mostTossWins.countoftosswins}}<br>
+                   </p>
                 </div>
               </div>
             </div>
+          </div>
           </div>
            {% endif %}
            
@@ -38,9 +47,23 @@
             <div class="col s12 m6">
               <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
-                  <span class="card-title">Maximum Player of the Match</span>
-                  <label>Name:{{mostPomWins.player_of_match}}</label>
-                  <label>Total POM:{{mostPomWins.countofpomwins}}</label>
+                  <span class="card-title">Maximum Wins of Player of the Match</span>
+                  <ul class="collection">
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Name</span>
+                        <p style="color:gray">{{mostPomWins.player_of_match}} <br>
+                       </p>
+                    </div>
+                    </li>
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Total POM</span>
+                        <p style="color:gray">{{mostPomWins.countofpomwins}} <br>
+                       </p>
+                    </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -53,8 +76,22 @@
               <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
                   <span class="card-title">Team with most wins</span>
-                  <label>Team:{{mostTeamWins.winner}}</label>
-                  <label>Total wins:{{mostTeamWins.countofteamwins}}</label>
+                  <ul class="collection">
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Team</span>
+                        <p style="color:gray">{{mostTeamWins.winner}}<br>
+                       </p>
+                    </div>
+                    </li>
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Total wins</span>
+                        <p style="color:gray">{{mostTeamWins.countofteamwins}}<br>
+                       </p>
+                    </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -67,9 +104,23 @@
             <div class="col s12 m6">
               <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
-                  <span class="card-title">location most wins for the top team</span>
-                  <label>Team:{{mostVenueWins.venue}}</label>
-                  <label>Total wins:{{mostVenueWins.countofvenuewins}}</label>
+                  <span class="card-title">location most wins for the {{topTeam}}</span>
+                  <ul class="collection">
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Team</span>
+                        <p style="color:gray">{{mostVenueWins.venue}}<br>
+                       </p>
+                    </div>
+                    </li>
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Total wins</span>
+                        <p style="color:gray">{{mostVenueWins.countofvenuewins}}<br>
+                       </p>
+                    </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -81,8 +132,16 @@
             <div class="col s12 m6">
               <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
-                  <span class="card-title">% of Bats</span>
-                  <label>Bat Perc:{{percOfBats}}</label>
+                  <span class="card-title">% of times Batting was chosen</span>
+                  <ul class="collection">
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Batting, as the choice on winning the toss in terms of %</span>
+                        <p style="color:gray">{{percOfBats}}<br>
+                       </p>
+                    </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -94,9 +153,23 @@
             <div class="col s12 m6">
               <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
-                  <span class="card-title">location hosted most matches</span>
-                  <label>Team:{{mostVenue.venue}}</label>
-                  <label>Total hosted:{{mostVenue.countofvenue}}</label>
+                  <span class="card-title">Location hosted most matches</span>
+                  <ul class="collection">
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Venue</span>
+                        <p style="color:gray">{{mostVenue.venue}}<br>
+                       </p>
+                    </div>
+                    </li>
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Total Hosted</span>
+                        <p style="color:gray">{{mostVenue.countofvenue}}<br>
+                       </p>
+                    </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -108,10 +181,86 @@
             <div class="col s12 m6">
               <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
-                  <span class="card-title">Higest Margin of wins for the particular season</span>
-                  <label>Margin:{{maxRunMargin.win_by_runs}}</label>
-                  <label>Winning team:{{maxRunMargin.winner}}</label>
-                  <label>Venue:{{maxRunMargin.venue}}</label>
+                  <span class="card-title">Highest Margin in Runs for a win, for the year {{year}}</span>
+                  <ul class="collection">
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Margin</span>
+                        <p style="color:gray">{{maxRunMargin.win_by_runs}}<br>
+                       </p>
+                    </div>
+                    </li>
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Winning team</span>
+                        <p style="color:gray">{{maxRunMargin.winner}}<br>
+                       </p>
+                    </div>
+                    </li>
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Venue</span>
+                        <p style="color:gray">{{maxRunMargin.venue}}<br>
+                       </p>
+                    </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+           {% endif %}
+
+           {% if maxWicketMargin %}
+           <div class="row" style="width:50%;">
+            <div class="col s12 m6">
+              <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                  <span class="card-title">Highest Margin in terms of wickets for win, for the particular season</span>
+                  <ul class="collection">
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Margin</span>
+                        <p style="color:gray">{{maxWicketMargin.win_by_wickets}}<br>
+                       </p>
+                    </div>
+                    </li>
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Winning team</span>
+                        <p style="color:gray">{{maxWicketMargin.winner}}<br>
+                       </p>
+                    </div>
+                    </li>
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Venue</span>
+                        <p style="color:gray">{{maxWicketMargin.venue}}<br>
+                       </p>
+                    </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+           {% endif %}
+
+           {% if totalCountTossAndWins %}
+           <div class="row" style="width:50%;">
+            <div class="col s12 m6">
+              <div class="card blue-grey darken-1">
+                <div class="card-content white-text">
+                  <span class="card-title">Times when Winning the toss preceeded winning the Game</span>
+                  <ul class="collection">
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Count</span>
+                        <p style="color:gray">{{totalCountTossAndWins}}<br>
+                       </p>
+                    </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -123,9 +272,23 @@
             <div class="col s12 m6">
               <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
-                  <span class="card-title">Higest Runs Hit by a Player</span>
-                  <label>Name:{{maxRunsHitMatch.id.batsman}}</label>
-                  <label>Runs:{{maxRunsHitMatch.totalruns}}</label>
+                  <span class="card-title">Most Runs Hit by a Player</span>
+                  <ul class="collection">
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Name of the Player</span>
+                        <p style="color:gray">{{maxRunsHitMatch.id.batsman}}<br>
+                       </p>
+                    </div>
+                    </li>
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Runs</span>
+                        <p style="color:gray">{{maxRunsHitMatch.totalruns}}<br>
+                       </p>
+                    </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -137,9 +300,23 @@
             <div class="col s12 m6">
               <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
-                  <span class="card-title">Most Runs in a Match by a Bowler</span>
-                  <label>Name:{{maxRunsGiven.id.bowler}}</label>
-                  <label>Runs Given:{{maxRunsGiven.totalruns}}</label>
+                  <span class="card-title">Most Runs Given in a Match by a Bowler</span>
+                  <ul class="collection">
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Name of the Player</span>
+                        <p style="color:gray">{{maxRunsGiven.id.bowler}}<br>
+                       </p>
+                    </div>
+                    </li>
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Runs Given</span>
+                        <p style="color:gray">{{maxRunsGiven.totalruns}}<br>
+                       </p>
+                    </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -152,8 +329,22 @@
               <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
                   <span class="card-title">Most Catches in one match by a single fielder</span>
-                  <label>Name:{{maxFielderCatches.id.fielder}}</label>
-                  <label>Count:{{maxFielderCatches.count}}</label>
+                  <ul class="collection">
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Name of the Player</span>
+                        <p style="color:gray">{{maxFielderCatches.id.fielder}}<br>
+                       </p>
+                    </div>
+                    </li>
+                    <li>
+                      <div class="collapsible-header" style="display:grid;">
+                        <span class="title" style="color:gray;">Runs Given</span>
+                        <p style="color:gray">{{maxFielderCatches.count}}<br>
+                       </p>
+                    </div>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>

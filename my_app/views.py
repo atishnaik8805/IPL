@@ -63,7 +63,7 @@ def yeardata(request):
     #print(top4)
     
 
-    print(top4qs)
+    #print(top4qs)
 
     #q2
     tossWins = models.IPL.objects.values('toss_winner').annotate(countoftosswins= Count('toss_winner')).filter(date__year=year)
@@ -154,11 +154,10 @@ def yeardata(request):
 
     allids=models.IPL.objects.values_list('id', flat=True).filter(date__year=year)
     allids = list(allids)
-    print((allids))
-    print(os.environ.get('MONGO_USER'))
-    print(os.environ.get('MONGO_PASS'))
+    #print((allids))
+    #print(os.environ.get('MONGO_USER'))
+    #print(os.environ.get('MONGO_PASS'))
     uri = 'mongodb+srv://'+os.environ.get('MONGO_USER')+':'+os.environ.get('MONGO_PASS')+'@cluster2.d8upo.mongodb.net/ipl?retryWrites=true&w=majority'
-    #client = pymongo.MongoClient("mongodb+srv://ipluser:atishnaik8805@cluster2.d8upo.mongodb.net/ipl?retryWrites=true&w=majority")
     client = pymongo.MongoClient(uri)
     db = client['ipl']
     cursor4Year = db.get_collection('dummy2').aggregate(
@@ -237,11 +236,12 @@ def yeardata(request):
     
     maxCatches['id'] = maxCatches['_id']
     
-    print(maxRunsBowl)
+    #print(maxRunsBowl)
     #q2.3
     
     sendData = {
         'years': dates,
+        'topTeam': top4['1'],
         'mostTossWins': maxTossWinsTeam,
         'top4teams': top4.values(),
         'mostPomWins': maxPomWinsTeam,
@@ -256,5 +256,5 @@ def yeardata(request):
         'maxRunsGiven': maxRunsBowl,
         'maxFielderCatches': maxCatches
     }
-    print(sendData)
+    #print(sendData)
     return render(request, 'my_app/new_search.html', sendData)
