@@ -23,32 +23,6 @@
 </nav>
 <div class="container">
    <h1 style="text-align: center">Select a Season</h1>
-    <!-- <div class="row">
-        <div class="col s4">
-            <div class="center">
-                <i class="large material-icons" style="color: #EE6E73">flash_on</i>
-                <p>Fast craigslist-bangalore web scraper</p>
-                <p class="light center">Scrape away right here with a beautiful GUI.</p>
-            </div>
-        </div>
-
-        <div class="col s4">
-            <div class="center">
-                <i class="large material-icons" style="color: orange">camera</i>
-                <p>Filter your searches</p>
-                <p class="light center">Built in functionality to filter based on pricing.</p>
-            </div>
-        </div>
-
-        <div class="col s4">
-            <div class="center">
-                <i class="large material-icons" style="color: blue">chrome_reader_mode</i>
-                <p>A much better front-end to Craigslist</p>
-                <p class="light center">We built this with ❤️💕</p>
-            </div>
-        </div>
-    </div> -->
-    <h1>New Search</h1>
     <form action="{% url 'yeardata' %}" method="post">
         {% csrf_token %}
         <!-- <input typr="text" name="search" placeholder="search"> -->
